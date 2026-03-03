@@ -2,6 +2,14 @@
 
 SKILL.md의 오버플로우 방지 상수(`SAFE`, `SAFE_TEXT`, `COLORS`, `FONTS`, `addTitleBar`, `addStyledTable`, `addStyledChart`)가 이미 선언되어 있다고 가정한다.
 
+> **필수 전제**: 아래 모든 코드 예시는 `pptx.layout = 'LAYOUT_WIDE'`가 설정된 상태를 전제한다.
+> 이 설정 없이는 모든 좌표가 틀어진다. (기본값 `LAYOUT_16x9`는 10"x5.625"로 이 스킬과 호환 안 됨)
+>
+> ```javascript
+> const pptx = new PptxGenJS();
+> pptx.layout = 'LAYOUT_WIDE';  // 13.33" x 7.5" — 필수!
+> ```
+
 ---
 
 ## 8개 핵심 레이아웃 패턴
@@ -17,6 +25,8 @@ SKILL.md의 오버플로우 방지 상수(`SAFE`, `SAFE_TEXT`, `COLORS`, `FONTS`
 
 ```javascript
 function createTitleSlide(pptx, title, subtitle, presenter, date) {
+  // ★★★★ 최초 슬라이드 생성 전 반드시 확인
+  // pptx.layout = 'LAYOUT_WIDE'; // 13.33" x 7.5" (PptxGenJS 인스턴스 생성 직후 1회 설정)
   const slide = pptx.addSlide();
   // 전체 다크 배경
   slide.addShape('rect', { x: 0, y: 0, w: '100%', h: '100%',
