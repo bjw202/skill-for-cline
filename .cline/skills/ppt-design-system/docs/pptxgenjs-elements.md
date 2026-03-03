@@ -1,6 +1,6 @@
 # PptxGenJS 요소별 상세 가이드
 
-SKILL.md의 오버플로우 방지 상수(`SAFE`, `SAFE_TEXT`, `COLORS`, `FONTS`)가 이미 선언되어 있다고 가정한다.
+SKILL.md의 오버플로우 방지 상수(`SAFE`, `SAFE_TITLE`, `SAFE_TEXT`, `COLORS`, `FONTS`)가 이미 선언되어 있다고 가정한다.
 
 > **필수 전제**: 아래 모든 코드 예시는 `pptx.layout = 'LAYOUT_WIDE'`가 설정된 상태를 전제한다.
 > 이 설정 없이는 모든 좌표가 틀어진다. (기본값 `LAYOUT_16x9`는 10"x5.625"로 이 스킬과 호환 안 됨)
@@ -25,26 +25,26 @@ const TABLE_STYLE = {
     fill: { color: COLORS.bg_dark },
     color: COLORS.text_on_dark,
     fontFace: 'Pretendard',
-    fontSize: 11,   // ★ 테이블 셀은 최대 11pt (오버플로우 방지)
+    fontSize: 12,   // ★ 테이블 셀 12pt (가독성 확보)
     align: 'center',
     valign: 'middle'
   },
   cell: {
     fontFace: 'Pretendard',
-    fontSize: 11,
+    fontSize: 12,
     color: COLORS.text_secondary,
     valign: 'middle'
   },
   cellRight: {  // 숫자 셀 (우측 정렬)
     fontFace: 'Pretendard',
-    fontSize: 11,
+    fontSize: 12,
     color: COLORS.text_secondary,
     align: 'right',
     valign: 'middle'
   },
   cellAlt: {  // zebra stripe (짝수행)
     fontFace: 'Pretendard',
-    fontSize: 11,
+    fontSize: 12,
     color: COLORS.text_secondary,
     fill: { color: COLORS.bg_secondary },
     valign: 'middle'
@@ -52,7 +52,7 @@ const TABLE_STYLE = {
   cellTotal: {  // 합계/소계 행
     bold: true,
     fontFace: 'Pretendard',
-    fontSize: 11,
+    fontSize: 12,
     color: COLORS.text_primary,
     border: [{ type: 'solid', pt: 1.5, color: COLORS.text_primary }, null, null, null],
     valign: 'middle'
@@ -97,7 +97,7 @@ function addTitledTable(slide, tableTitle, headers, dataRows, opts = {}) {
     options: {
       colspan: colCount, bold: true,
       fill: { color: COLORS.bg_dark }, color: COLORS.text_on_dark,
-      fontFace: 'Pretendard', fontSize: 13,
+      fontFace: 'Pretendard', fontSize: 14,
       align: 'center', valign: 'middle'
     }
   }]);
@@ -108,7 +108,7 @@ function addTitledTable(slide, tableTitle, headers, dataRows, opts = {}) {
     options: {
       bold: true, fill: { color: COLORS.bg_secondary },
       color: COLORS.text_primary, fontFace: 'Pretendard',
-      fontSize: 11, align: 'center', valign: 'middle'
+      fontSize: 12, align: 'center', valign: 'middle'
     }
   })));
 
@@ -197,15 +197,15 @@ addStyledTable(slide,
 const CHART_STYLE = {
   base: {
     showTitle: true,
-    titleFontFace: 'Pretendard', titleFontSize: 14,
+    titleFontFace: 'Pretendard', titleFontSize: 16,
     titleColor: COLORS.text_primary,
     showLegend: true,
-    legendFontFace: 'Pretendard', legendFontSize: 9,
+    legendFontFace: 'Pretendard', legendFontSize: 10,
     legendColor: COLORS.text_secondary,
     legendPos: 'b',  // ★ 하단 레전드 — 좌우 오버플로우 방지
-    catAxisLabelFontFace: 'Pretendard', catAxisLabelFontSize: 10,
+    catAxisLabelFontFace: 'Pretendard', catAxisLabelFontSize: 11,
     catAxisLabelColor: COLORS.text_tertiary,
-    valAxisLabelFontFace: 'Pretendard', valAxisLabelFontSize: 10,
+    valAxisLabelFontFace: 'Pretendard', valAxisLabelFontSize: 11,
     valAxisLabelColor: COLORS.text_tertiary,
   },
   colors: [
@@ -289,14 +289,14 @@ slide.addImage({
 ## 4. addText() — 텍스트 가이드
 
 ```javascript
-// ★ 모든 addText에 SAFE_TEXT({ wrap: true, shrinkText: true }) 적용 필수
+// ★ 제목/라벨/KPI에는 SAFE_TITLE, 본문/긴 텍스트에는 SAFE_TEXT 적용
 
-// 제목 (오버플로우 안전)
+// 제목 (오버플로우 안전 — 폰트 크기 유지)
 slide.addText('슬라이드 제목', {
   x: 0.6, y: 0.65, w: 10, h: 0.6,
-  fontSize: 28, ...FONTS.title,
+  fontSize: 32, ...FONTS.title,
   color: COLORS.text_primary, charSpacing: -0.3,
-  ...SAFE_TEXT
+  ...SAFE_TITLE
 });
 
 // 글머리 기호 목록 (★ 최대 6개 항목)
@@ -409,9 +409,9 @@ function addPageNumber(slide, num, total) {
   slide.addText(`${num} / ${total}`, {
     x: 11.6, y: 6.6, w: 0.9, h: 0.3,
     // ★ 확인: 11.6+0.9=12.5 < 12.73 ✓ / 6.6+0.3=6.9 < 7.0 ✓
-    fontSize: 9, ...FONTS.caption,
+    fontSize: 10, ...FONTS.caption,
     color: COLORS.text_tertiary, align: 'right',
-    ...SAFE_TEXT
+    ...SAFE_TITLE
   });
 }
 ```
@@ -440,13 +440,13 @@ function addCard(slide, { x, y, w, h, title, body, accentColor }) {
   // 카드 제목
   slide.addText(title, {
     x: x + 0.2, y: y + 0.2, w: w - 0.4, h: 0.35,
-    fontSize: 16, ...FONTS.subtitle, color: COLORS.text_primary,
-    ...SAFE_TEXT
+    fontSize: 18, ...FONTS.subtitle, color: COLORS.text_primary,
+    ...SAFE_TITLE
   });
   // 카드 본문
   slide.addText(body, {
     x: x + 0.2, y: y + 0.55, w: w - 0.4, h: h - 0.75,
-    fontSize: 13, ...FONTS.body, color: COLORS.text_secondary,
+    fontSize: 14, ...FONTS.body, color: COLORS.text_secondary,
     lineSpacingMultiple: 1.4, valign: 'top',
     ...SAFE_TEXT
   });

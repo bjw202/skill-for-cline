@@ -1,6 +1,6 @@
 # 레이아웃 패턴 & 슬라이드 구성 가이드
 
-SKILL.md의 오버플로우 방지 상수(`SAFE`, `SAFE_TEXT`, `COLORS`, `FONTS`, `addTitleBar`, `addStyledTable`, `addStyledChart`)가 이미 선언되어 있다고 가정한다.
+SKILL.md의 오버플로우 방지 상수(`SAFE`, `SAFE_TITLE`, `SAFE_TEXT`, `COLORS`, `FONTS`, `addTitleBar`, `addStyledTable`, `addStyledChart`)가 이미 선언되어 있다고 가정한다.
 
 > **필수 전제**: 아래 모든 코드 예시는 `pptx.layout = 'LAYOUT_WIDE'`가 설정된 상태를 전제한다.
 > 이 설정 없이는 모든 좌표가 틀어진다. (기본값 `LAYOUT_16x9`는 10"x5.625"로 이 스킬과 호환 안 됨)
@@ -38,14 +38,14 @@ function createTitleSlide(pptx, title, subtitle, presenter, date) {
   slide.addText(title, {
     x: 0.6, y: 2.2, w: 12.13, h: 1.2,
     fontSize: 44, ...FONTS.title, color: 'FFFFFF',
-    charSpacing: -0.5, align: 'left', ...SAFE_TEXT
+    charSpacing: -0.5, align: 'left', ...SAFE_TITLE
   });
   // 부제목
   if (subtitle) {
     slide.addText(subtitle, {
       x: 0.6, y: 3.5, w: 12.13, h: 0.7,
-      fontSize: 20, ...FONTS.body, color: 'FFFFFFB3', // 70% 흰색
-      align: 'left', ...SAFE_TEXT
+      fontSize: 22, ...FONTS.body, color: 'FFFFFFB3', // 70% 흰색
+      align: 'left', ...SAFE_TITLE
     });
   }
   // 발표자 / 날짜
@@ -79,7 +79,7 @@ function createSectionSlide(pptx, number, sectionTitle, description) {
   slide.addText(`${String(number).padStart(2, '0')}`, {
     x: 0.6, y: 2.5, w: 4.0, h: 2.0,
     fontSize: 72, ...FONTS.kpi, color: COLORS.accent_cyan,
-    align: 'center', valign: 'middle', ...SAFE_TEXT
+    align: 'center', valign: 'middle', ...SAFE_TITLE
   });
   // 구분선
   slide.addShape('rect', { x: 5.33, y: 1.5, w: 0.06, h: 4.5,
@@ -89,7 +89,7 @@ function createSectionSlide(pptx, number, sectionTitle, description) {
     x: 5.7, y: 2.3, w: 7.0, h: 1.2,
     // ★ 확인: 5.7+7.0=12.7 < 12.73 ✓
     fontSize: 36, ...FONTS.title, color: COLORS.text_primary,
-    charSpacing: -0.3, ...SAFE_TEXT
+    charSpacing: -0.3, ...SAFE_TITLE
   });
   // 설명
   slide.addText(description, {
@@ -123,7 +123,7 @@ function createTwoColumnSlide(pptx, title, leftContent, rightContent) {
   // 좌측 컬럼
   slide.addText(leftContent.title, {
     x: SAFE.x, y: colY, w: colW, h: 0.5,
-    fontSize: 20, ...FONTS.subtitle, color: COLORS.text_primary, ...SAFE_TEXT
+    fontSize: 24, ...FONTS.subtitle, color: COLORS.text_primary, ...SAFE_TITLE
   });
   slide.addText(leftContent.body, {
     x: SAFE.x, y: colY + 0.6, w: colW, h: colH - 0.7,
@@ -140,7 +140,7 @@ function createTwoColumnSlide(pptx, title, leftContent, rightContent) {
   const rightX = divX + 0.2;
   slide.addText(rightContent.title, {
     x: rightX, y: colY, w: colW, h: 0.5,
-    fontSize: 20, ...FONTS.subtitle, color: COLORS.text_primary, ...SAFE_TEXT
+    fontSize: 24, ...FONTS.subtitle, color: COLORS.text_primary, ...SAFE_TITLE
   });
   slide.addText(rightContent.body, {
     x: rightX, y: colY + 0.6, w: colW, h: colH - 0.7,
@@ -222,14 +222,14 @@ function createTimelineSlide(pptx, title, items) {
     // 시간 텍스트
     slide.addText(item.time, {
       x: SAFE.x, y: y + itemH / 2 - 0.2, w: 1.1, h: 0.4,
-      fontSize: 13, ...FONTS.subtitle, color: COLORS.accent_blue,
-      align: 'right', ...SAFE_TEXT
+      fontSize: 15, ...FONTS.subtitle, color: COLORS.accent_blue,
+      align: 'right', ...SAFE_TITLE
     });
     // 내용
     slide.addText(item.content, {
       x: 2.2, y: y + 0.1, w: SAFE.maxX - 2.2, h: itemH - 0.2,
       // ★ 확인: 2.2+(12.73-2.2)=12.73 ✓
-      fontSize: 15, ...FONTS.body, color: COLORS.text_secondary,
+      fontSize: 16, ...FONTS.body, color: COLORS.text_secondary,
       lineSpacingMultiple: 1.4, valign: 'middle', ...SAFE_TEXT
     });
     // 구분선 (마지막 항목 제외)
@@ -269,13 +269,13 @@ function createKPIDashboard(pptx, title, kpis, chartData) {
     slide.addText(kpi.value, {
       x, y: kpiY, w: kpiW, h: 0.9,
       fontSize: 48, ...FONTS.kpi, color: COLORS.accent_blue,
-      align: 'center', ...SAFE_TEXT
+      align: 'center', ...SAFE_TITLE
     });
     // KPI 라벨
     slide.addText(kpi.label, {
       x, y: kpiY + 0.9, w: kpiW, h: 0.4,
-      fontSize: 13, ...FONTS.caption, color: COLORS.text_tertiary,
-      align: 'center', ...SAFE_TEXT
+      fontSize: 14, ...FONTS.caption, color: COLORS.text_tertiary,
+      align: 'center', ...SAFE_TITLE
     });
   });
 
@@ -366,13 +366,13 @@ function createChartInsightSlide(pptx, title, chartDef, insights) {
     slide.addText(insight.value, {
       x: insightX, y: y, w: insightW, h: insightPerH * 0.5,
       fontSize: 36, ...FONTS.kpi, color: COLORS.accent_blue,
-      align: 'center', ...SAFE_TEXT
+      align: 'center', ...SAFE_TITLE
     });
     // 설명
     slide.addText(insight.description, {
       x: insightX, y: y + insightPerH * 0.5, w: insightW, h: insightPerH * 0.45,
       // ★ 확인: insightX+insightW ≈ 12.73 ✓
-      fontSize: 14, ...FONTS.body, color: COLORS.text_secondary,
+      fontSize: 16, ...FONTS.body, color: COLORS.text_secondary,
       align: 'center', lineSpacingMultiple: 1.3, ...SAFE_TEXT
     });
   });

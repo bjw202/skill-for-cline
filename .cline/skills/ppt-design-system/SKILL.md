@@ -108,7 +108,9 @@ const SAFE = {
 ### 텍스트 오버플로우 방지 규칙
 
 ```javascript
-// ★ 모든 addText에 반드시 적용할 안전 옵션
+// ★ 제목/라벨/KPI용 — shrinkText 없음 (지정 폰트 크기 유지)
+const SAFE_TITLE = { wrap: true };
+// ★ 본문/긴 텍스트용 — shrinkText 있음 (오버플로우 방지 폴백)
 const SAFE_TEXT = { wrap: true, shrinkText: true };
 
 // ★ 텍스트 높이 계산 함수 (배치 전 반드시 계산)
@@ -131,7 +133,8 @@ if (SAFE.titleY + textH > SAFE.maxY) {
 **텍스트 글자 수 제한**:
 - 16pt 기준 한 줄 최대: 한글 약 45자 / 영문 약 70자
 - 반드시 `wrap: true` 설정
-- 반드시 `shrinkText: true` 설정 (폴백)
+- 제목/라벨/KPI: `...SAFE_TITLE` (폰트 크기 유지)
+- 본문/긴 텍스트: `...SAFE_TEXT` (`shrinkText: true` 폴백)
 
 ### 테이블 오버플로우 방지 규칙
 
@@ -158,7 +161,7 @@ function checkTableBounds(rowCount, rowH = 0.4, headerH = 0.45, startY = SAFE.ti
 **테이블 필수 규칙**:
 - 슬라이드당 최대 **8~10행** (헤더 포함, 여백 확보)
 - 행이 초과하면 → 슬라이드 분할 + "(계속)" 접미사 추가
-- 셀 폰트 크기: **10~11pt** (절대 12pt 초과 금지)
+- 셀 폰트 크기: **11~12pt** (절대 13pt 초과 금지)
 - `autoPage: true` 설정 권장 (자동 페이지 분할)
 
 ### 글머리 목록 오버플로우 방지 규칙
@@ -306,11 +309,11 @@ function addTitleBar(slide, title, subtitle = '') {
   slide.addShape('rect', { x: 0.6, y: 0.5, w: 1.2, h: 0.06,
     fill: { color: COLORS.accent_blue } });
   slide.addText(title, { x: 0.6, y: 0.65, w: 10, h: 0.6,
-    fontSize: 28, ...FONTS.title, color: COLORS.text_primary,
-    charSpacing: -0.3, ...SAFE_TEXT });
+    fontSize: 32, ...FONTS.title, color: COLORS.text_primary,
+    charSpacing: -0.3, ...SAFE_TITLE });
   if (subtitle) {
     slide.addText(subtitle, { x: 0.6, y: 1.25, w: 10, h: 0.4,
-      fontSize: 16, ...FONTS.body, color: COLORS.text_tertiary, ...SAFE_TEXT });
+      fontSize: 18, ...FONTS.body, color: COLORS.text_tertiary, ...SAFE_TITLE });
   }
 }
 ```
@@ -349,9 +352,9 @@ function addTitleBar(slide, title, subtitle = '') {
 ```javascript
 const TS = {  // TABLE_STYLE 단축
   hdr: { bold: true, fill: { color: COLORS.bg_dark }, color: COLORS.text_on_dark,
-         fontFace: 'Pretendard', fontSize: 11, align: 'center', valign: 'middle' },
-  cel: { fontFace: 'Pretendard', fontSize: 11, color: COLORS.text_secondary, valign: 'middle' },
-  alt: { fontFace: 'Pretendard', fontSize: 11, color: COLORS.text_secondary,
+         fontFace: 'Pretendard', fontSize: 12, align: 'center', valign: 'middle' },
+  cel: { fontFace: 'Pretendard', fontSize: 12, color: COLORS.text_secondary, valign: 'middle' },
+  alt: { fontFace: 'Pretendard', fontSize: 12, color: COLORS.text_secondary,
          fill: { color: COLORS.bg_secondary }, valign: 'middle' }
 };
 
@@ -381,11 +384,11 @@ function addStyledTable(slide, headers, dataRows, opts = {}) {
 ```javascript
 const CHART_STYLE = {
   base: {
-    showTitle: true, titleFontFace: 'Pretendard', titleFontSize: 14,
-    showLegend: true, legendFontFace: 'Pretendard', legendFontSize: 9,
+    showTitle: true, titleFontFace: 'Pretendard', titleFontSize: 16,
+    showLegend: true, legendFontFace: 'Pretendard', legendFontSize: 10,
     legendPos: 'b',  // ★ 하단 레전드 — 좌우 오버플로우 방지
-    catAxisLabelFontFace: 'Pretendard', catAxisLabelFontSize: 10,
-    valAxisLabelFontFace: 'Pretendard', valAxisLabelFontSize: 10,
+    catAxisLabelFontFace: 'Pretendard', catAxisLabelFontSize: 11,
+    valAxisLabelFontFace: 'Pretendard', valAxisLabelFontSize: 11,
   },
   colors: ['4A7BF7','00D4AA','FFB020','FF6B6B','8B5CF6','38BDF8']
 };
@@ -424,7 +427,7 @@ function addStyledChart(slide, pptx, type, chartData, opts = {}) {
 - [ ] 우측 하단 배치 요소 특별 주의 (x >= 8.0 또는 y >= 5.0인 요소)
 - [ ] `validateBounds()` 함수 호출 및 오류 없음 확인
 - [ ] 테이블 행 수 ≤ 10행 (초과 시 분할 완료 확인)
-- [ ] 모든 `addText`에 `...SAFE_TEXT` (`wrap: true, shrinkText: true`) 적용 확인
+- [ ] 제목/라벨/KPI에 `...SAFE_TITLE` (`wrap: true`), 본문에 `...SAFE_TEXT` (`wrap: true, shrinkText: true`) 적용 확인
 - [ ] 차트 y+h ≤ 7.0 및 legendPos: 'b' 확인
 - [ ] 글머리 기호 ≤ 6개 / 줄당 한글 ≤ 18자 확인
 - [ ] 페이지 번호: x+w ≤ 12.73, y+h ≤ 7.0 확인
