@@ -50,6 +50,18 @@ Use the built-in validation script:
 .cline/skills/skill-builder/scripts/validate-skill.sh <path/to/SKILL.md>
 ```
 
+## Credits
+
+### samples-claude-skills/
+
+`samples-claude-skills/` 디렉토리의 스킬들은 **[modu-ai/smart-cowork-life](https://github.com/modu-ai/smart-cowork-life)** GitHub 저장소에서 가져온 것입니다.
+
+- **원작자**: [모두AI (mo.ai.kr)](https://mo.ai.kr)
+- **원본 저장소**: https://github.com/modu-ai/smart-cowork-life
+- **라이선스**: MIT
+
+이 스킬들은 한국 직장인을 위한 AI 업무 자동화 플러그인 "슬기로운 코워크 생활"의 Claude Code 스킬 원본이며, 본 프로젝트에서는 Cline 변환 작업의 레퍼런스로 활용하고 있습니다.
+
 ## Project Info
 
 - Platform: Cline (VS Code Extension)
