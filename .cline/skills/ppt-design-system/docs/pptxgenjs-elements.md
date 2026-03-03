@@ -53,7 +53,7 @@ const TABLE_STYLE = {
 
 const TABLE_OPTIONS = {
   x: SAFE.x,     // 0.6"
-  y: SAFE.titleY, // 1.6" (제목 바 아래) — 실제로는 1.8" 권장
+  y: 1.8,        // 제목 바(~1.6") 아래 0.2" 간격
   w: SAFE.w,     // 12.13"
   border: { type: 'solid', pt: 0.5, color: 'E2E8F0' },
   autoPage: false,
@@ -71,8 +71,10 @@ const TABLE_OPTIONS = {
 function addTitledTable(slide, tableTitle, headers, dataRows, opts = {}) {
   const colCount = headers.length;
   const rowH = opts.rowH?.[1] || 0.4;
+  const startY = opts.y || TABLE_OPTIONS.y || 1.8;
+  const availH = SAFE.maxY - startY;  // ★ 실제 남은 높이 기준 계산
   const headerTotalH = 0.55 + 0.45; // 제목행 + 컬럼헤더행
-  const maxRows = Math.floor((SAFE.contentH - headerTotalH) / rowH);
+  const maxRows = Math.floor((availH - headerTotalH) / rowH);
 
   if (dataRows.length > maxRows) {
     console.warn(`★ addTitledTable: ${dataRows.length}행 > 최대 ${maxRows}행. 분할 권장.`);
@@ -269,9 +271,8 @@ slide.addImage({
 // 로고 삽입 (우측 하단, 슬라이드 경계 내)
 slide.addImage({
   path: '/path/to/logo.png',
-  x: 11.5, y: 6.8, w: 1.2, h: 0.5
-  // ★ 확인: 11.5+1.2=12.7 < 12.73 ✓ / 6.8+0.5=7.3 > 7.0 ❌ → 조정 필요
-  // 수정: y: 6.5, h: 0.45 → 6.5+0.45=6.95 < 7.0 ✓
+  x: 11.5, y: 6.5, w: 1.2, h: 0.45
+  // ★ 확인: 11.5+1.2=12.7 < 12.73 ✓ / 6.5+0.45=6.95 < 7.0 ✓
 });
 ```
 
@@ -398,11 +399,11 @@ const FONT_DIR = path.join(__dirname, 'fonts'); // OTF 파일 경로
 ```javascript
 function addPageNumber(slide, num, total) {
   slide.addText(`${num} / ${total}`, {
-    x: 12.0, y: 6.9, w: 1.0, h: 0.3,  // ★ 12.0+1.0=13.0 > 12.73 주의!
-    // 수정: x: 11.6, w: 0.9 → 11.6+0.9=12.5 < 12.73 ✓ / 6.9+0.3=7.2 > 7.0 ❌
-    // 안전한 값: x: 11.6, y: 6.6, w: 0.9, h: 0.3 → 끝: 12.5, 6.9 ✓
+    x: 11.6, y: 6.6, w: 0.9, h: 0.3,
+    // ★ 확인: 11.6+0.9=12.5 < 12.73 ✓ / 6.6+0.3=6.9 < 7.0 ✓
     fontSize: 9, ...FONTS.caption,
-    color: COLORS.text_tertiary, align: 'right'
+    color: COLORS.text_tertiary, align: 'right',
+    ...SAFE_TEXT
   });
 }
 ```

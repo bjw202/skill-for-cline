@@ -54,6 +54,33 @@ const SAFE = {
 
 **절대 금지**: x + w > 12.73" 또는 y + h > 7.0" 인 요소 배치
 
+### ★ 모든 요소 배치 전 필수 검증 규칙
+
+**모든 `addText`, `addTable`, `addChart`, `addImage`, `addShape` 호출 시 반드시 아래를 확인한다:**
+
+1. `x + w <= 12.73` (우측 초과 금지)
+2. `y + h <= 7.0` (하단 초과 금지)
+3. `x >= 0.6` (좌측 여백 확보)
+4. `y >= 0.5` (상단 여백 확보)
+
+**계산 예시**: `x: 8.0, w: 5.0` → 8.0+5.0=13.0 > 12.73 **금지!** → `w: 4.73`으로 축소
+
+**동적 콘텐츠 생성 시**: 반드시 헬퍼 함수(`addStyledTable`, `addStyledChart`, `addCard`, `addTitleBar`)를 사용한다. 이 함수들은 오버플로우 가드가 내장되어 있다.
+
+**우측 영역에 요소 배치 시 주의**: x 좌표가 높을수록 w를 줄여야 한다.
+- x=0.6 → 최대 w=12.13
+- x=5.0 → 최대 w=7.73
+- x=8.0 → 최대 w=4.73
+- x=10.0 → 최대 w=2.73
+- x=11.0 → 최대 w=1.73
+
+**하단 영역에 요소 배치 시 주의**: y 좌표가 높을수록 h를 줄여야 한다.
+- y=1.6 → 최대 h=5.4
+- y=1.8 → 최대 h=5.2
+- y=3.0 → 최대 h=4.0
+- y=5.0 → 최대 h=2.0
+- y=6.0 → 최대 h=1.0
+
 ### 텍스트 오버플로우 방지 규칙
 
 ```javascript
@@ -305,9 +332,11 @@ const TS = {  // TABLE_STYLE 단축
 };
 
 function addStyledTable(slide, headers, dataRows, opts = {}) {
-  // ★ 오버플로우 가드: 최대 행 수 초과 시 잘라냄
+  // ★ 오버플로우 가드: 실제 시작 y 기준으로 사용 가능 높이 계산
+  const startY = opts.y || 1.8;
   const rowH = opts.rowH?.[1] || 0.4;
-  const max = maxTableRows(SAFE.contentH, rowH, 0.45);
+  const availH = SAFE.maxY - startY;  // ★ 핵심: 실제 남은 높이 (y=1.8이면 5.2")
+  const max = maxTableRows(availH, rowH, 0.45);
   if (dataRows.length > max) dataRows = dataRows.slice(0, max);
 
   const rows = [ headers.map(h => ({ text: h, options: { ...TS.hdr } })) ];
@@ -317,7 +346,7 @@ function addStyledTable(slide, headers, dataRows, opts = {}) {
       ? { text: c, options: { ...base } }
       : { text: c.text, options: { ...base, ...c.options } }));
   });
-  slide.addTable(rows, { x: 0.6, y: 1.8, w: 12.13,
+  slide.addTable(rows, { x: 0.6, y: startY, w: 12.13,
     border: { type: 'solid', pt: 0.5, color: 'E2E8F0' },
     autoPage: false, margin: [5, 8, 5, 8], ...opts });
 }
@@ -361,14 +390,16 @@ function addStyledChart(slide, pptx, type, chartData, opts = {}) {
 
 문서 생성 후 순서대로 확인:
 
-**★★★ 오버플로우 검사 (최우선)**
+**★★★ 오버플로우 검사 (최우선 — 하나라도 실패 시 수정 필수)**
+- [ ] **모든 요소**의 `x + w <= 12.73` 확인 (수동으로 각 요소 계산)
+- [ ] **모든 요소**의 `y + h <= 7.0` 확인 (수동으로 각 요소 계산)
+- [ ] 우측 하단 배치 요소 특별 주의 (x >= 8.0 또는 y >= 5.0인 요소)
 - [ ] `validateBounds()` 함수 호출 및 오류 없음 확인
-- [ ] 모든 요소의 x+w ≤ 12.73" 확인
-- [ ] 모든 요소의 y+h ≤ 7.0" 확인
 - [ ] 테이블 행 수 ≤ 10행 (초과 시 분할 완료 확인)
-- [ ] 모든 `addText`에 `wrap: true, shrinkText: true` 적용 확인
-- [ ] 차트 h ≤ 5.0" 및 legendPos: 'b' 확인
+- [ ] 모든 `addText`에 `...SAFE_TEXT` (`wrap: true, shrinkText: true`) 적용 확인
+- [ ] 차트 y+h ≤ 7.0 및 legendPos: 'b' 확인
 - [ ] 글머리 기호 ≤ 6개 / 줄당 한글 ≤ 18자 확인
+- [ ] 페이지 번호: x+w ≤ 12.73, y+h ≤ 7.0 확인
 
 **디자인 품질 검사**
 - [ ] 제목 36~44pt / 소제목 24~28pt / 본문 16~20pt
