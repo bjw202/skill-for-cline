@@ -1,0 +1,212 @@
+{
+  "meta": {
+    "source_file": "sample-report.docx",
+    "analyzed_at": "2026-03-04T10:00:00",
+    "analyzer_version": "1.0.0",
+    "page_count": 2,
+    "word_count": 150
+  },
+  "page_setup": {
+    "orientation": "portrait",
+    "page_width_cm": 21.0,
+    "page_height_cm": 29.7,
+    "margin_top_cm": 2.54,
+    "margin_bottom_cm": 2.54,
+    "margin_left_cm": 3.17,
+    "margin_right_cm": 3.17,
+    "header_distance_cm": 1.27,
+    "footer_distance_cm": 1.27,
+    "gutter_cm": 0.0
+  },
+  "sections": [
+    {
+      "index": 0,
+      "page_setup": null,
+      "has_different_first_page": false,
+      "headers": {
+        "primary": null,
+        "first_page": null,
+        "even_pages": null
+      },
+      "footers": {
+        "primary": null,
+        "first_page": null,
+        "even_pages": null
+      }
+    }
+  ],
+  "styles": {
+    "paragraph_styles": [
+      {
+        "name": "제목 1",
+        "base_style": null,
+        "font": {
+          "name_ascii": "Times New Roman",
+          "name_east_asia": "맑은 고딕",
+          "size_pt": 16.0,
+          "bold": true,
+          "italic": false,
+          "underline": "none",
+          "strikethrough": false,
+          "color": "#000000",
+          "spacing_pt": 0.0
+        },
+        "paragraph_format": {
+          "alignment": "left",
+          "line_spacing_rule": "multiple",
+          "line_spacing": 1.6,
+          "space_before_pt": 12.0,
+          "space_after_pt": 6.0,
+          "first_line_indent_cm": 0.0,
+          "left_indent_cm": 0.0,
+          "right_indent_cm": 0.0,
+          "keep_with_next": true,
+          "keep_together": false,
+          "page_break_before": false
+        }
+      },
+      {
+        "name": "본문",
+        "base_style": null,
+        "font": {
+          "name_ascii": "Times New Roman",
+          "name_east_asia": "맑은 고딕",
+          "size_pt": 11.0,
+          "bold": false,
+          "italic": false,
+          "underline": "none",
+          "strikethrough": false,
+          "color": "#000000",
+          "spacing_pt": 0.0
+        },
+        "paragraph_format": {
+          "alignment": "justify",
+          "line_spacing_rule": "multiple",
+          "line_spacing": 1.6,
+          "space_before_pt": 0.0,
+          "space_after_pt": 6.0,
+          "first_line_indent_cm": 0.0,
+          "left_indent_cm": 0.0,
+          "right_indent_cm": 0.0,
+          "keep_with_next": false,
+          "keep_together": false,
+          "page_break_before": false
+        }
+      }
+    ],
+    "character_styles": [],
+    "table_styles": []
+  },
+  "numbering": {
+    "definitions": []
+  },
+  "content": [
+    {
+      "type": "paragraph",
+      "style": "제목 1",
+      "text": "보고서 제목",
+      "runs": [
+        {
+          "text": "보고서 제목",
+          "font": {
+            "name_ascii": "Times New Roman",
+            "name_east_asia": "맑은 고딕",
+            "size_pt": 16.0,
+            "bold": true,
+            "color": "#000000"
+          }
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "style": "본문",
+      "text": "보고서 본문 내용입니다. 이 문서는 샘플 템플릿으로 생성되었습니다.",
+      "runs": [
+        {
+          "text": "보고서 본문 내용입니다. ",
+          "font": {
+            "name_ascii": "Times New Roman",
+            "name_east_asia": "맑은 고딕",
+            "size_pt": 11.0,
+            "bold": false,
+            "color": "#000000"
+          }
+        },
+        {
+          "text": "이 문서는 샘플 템플릿으로 생성되었습니다.",
+          "font": {
+            "name_ascii": "Times New Roman",
+            "name_east_asia": "맑은 고딕",
+            "size_pt": 11.0,
+            "bold": false,
+            "color": "#000000"
+          }
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "rows": 3,
+      "cols": 3,
+      "col_widths_cm": [5.0, 5.0, 4.66],
+      "data": [
+        [
+          {
+            "text": "항목",
+            "shading_color": "#1A1F36",
+            "font": { "bold": true, "color": "#FFFFFF", "size_pt": 11.0 },
+            "merge": null,
+            "vertical_alignment": "center"
+          },
+          {
+            "text": "내용",
+            "shading_color": "#1A1F36",
+            "font": { "bold": true, "color": "#FFFFFF", "size_pt": 11.0 },
+            "merge": null,
+            "vertical_alignment": "center"
+          },
+          {
+            "text": "비고",
+            "shading_color": "#1A1F36",
+            "font": { "bold": true, "color": "#FFFFFF", "size_pt": 11.0 },
+            "merge": null,
+            "vertical_alignment": "center"
+          }
+        ],
+        [
+          { "text": "항목 1", "shading_color": null, "font": {}, "merge": null, "vertical_alignment": "top" },
+          { "text": "내용 1", "shading_color": null, "font": {}, "merge": null, "vertical_alignment": "top" },
+          { "text": "-", "shading_color": null, "font": {}, "merge": null, "vertical_alignment": "top" }
+        ],
+        [
+          { "text": "항목 2", "shading_color": "#F5F7FA", "font": {}, "merge": null, "vertical_alignment": "top" },
+          { "text": "내용 2", "shading_color": "#F5F7FA", "font": {}, "merge": null, "vertical_alignment": "top" },
+          { "text": "-", "shading_color": "#F5F7FA", "font": {}, "merge": null, "vertical_alignment": "top" }
+        ]
+      ],
+      "borders": {
+        "top": { "style": "single", "width_pt": 1.0, "color": "#000000" },
+        "bottom": { "style": "single", "width_pt": 1.0, "color": "#000000" },
+        "left": { "style": "single", "width_pt": 0.5, "color": "#000000" },
+        "right": { "style": "single", "width_pt": 0.5, "color": "#000000" },
+        "inside_h": { "style": "single", "width_pt": 0.5, "color": "#CCCCCC" },
+        "inside_v": { "style": "single", "width_pt": 0.5, "color": "#CCCCCC" }
+      }
+    },
+    {
+      "type": "paragraph",
+      "style": "본문",
+      "text": "표 이후 추가 본문 내용입니다.",
+      "runs": [
+        {
+          "text": "표 이후 추가 본문 내용입니다.",
+          "font": {
+            "size_pt": 11.0,
+            "bold": false
+          }
+        }
+      ]
+    }
+  ]
+}
